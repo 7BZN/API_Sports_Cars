@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carros Esportivos</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>🚗 Sport Cars</h1>
+  
+  <div class="search-box">
+    <input type="text" id="search" placeholder="Ex: Ferrari, Porsche...">
+    <button onclick="buscarCarros()">Buscar</button>
+  </div>
+
+  <button onclick="mostrarFavoritos()" class="fav-btn">⭐ Favoritos</button>
+</header>
+
+<main id="carros"></main>
+
+<div id="loading" class="loading hidden">Carregando...</div>
+
+<script src="script.js"></script>
+
+<script>
+document.getElementById("btn").addEventListener("click", buscarCarros);
+
+async function buscarCarros() {
+  console.log("clicou ✅");
+
+  try {
+    const resposta = await fetch("https://parallelum.com.br/fipe/api/v1/carros/marcas");
+    const dados = await resposta.json();
+
+    const container = document.getElementById("carros");
+    container.innerHTML = "";
+
+    dados.slice(0, 10).forEach(carro => {
+      const p = document.createElement("p");
+      p.innerText = carro.nome;
+      container.appendChild(p);
+    });
+
+  } catch (erro) {
+    console.error("ERRO:", erro);
+    alert("Erro ao carregar API");
+  }
+}
+</script>
+</body>
+</html>
